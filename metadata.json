@@ -1,0 +1,6 @@
+{
+  "name": "NexusTrade SaaS",
+  "description": "3D animated stock broker and crypto trading SaaS with GSAP and Three.js",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
