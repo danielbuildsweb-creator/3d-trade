@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const assets = [
   { symbol: 'BTC', name: 'Bitcoin', price: '64,230.00', change: '+2.4%', color: 'from-[#F7931A]' },
@@ -10,24 +13,66 @@ const assets = [
 ];
 
 export const Markets: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Ticker animation
-    if (tickerRef.current) {
-      gsap.to(tickerRef.current, {
-        x: '-50%',
-        duration: 20,
-        ease: 'none',
-        repeat: -1
+    const ctx = gsap.context(() => {
+      // Ticker animation
+      if (tickerRef.current) {
+        gsap.to(tickerRef.current, {
+          x: '-50%',
+          duration: 20,
+          ease: 'none',
+          repeat: -1
+        });
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          toggleActions: 'play reverse play reverse'
+        }
       });
-    }
+
+      tl.from(sectionRef.current, {
+        opacity: 0,
+        y: 80,
+        scale: 0.95,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0);
+
+      tl.fromTo('.gsap-headline', {
+        opacity: 0, y: 40, rotateX: -15
+      }, {
+        opacity: 1, y: 0, rotateX: 0, duration: 0.6, ease: 'power3.out'
+      }, 0.1);
+
+      tl.fromTo('.gsap-subheading', {
+        opacity: 0, x: -30
+      }, {
+        opacity: 1, x: 0, duration: 0.6, ease: 'power3.out'
+      }, 0.2);
+
+      tl.fromTo('.market-card', {
+        opacity: 0, y: 40, scale: 0.95
+      }, {
+        opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out'
+      }, 0.3);
+
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="markets" className="py-24 bg-primary-bg relative overflow-hidden text-white">
+    <section id="markets" ref={sectionRef} className="py-24 relative overflow-hidden text-white scroll-mt-20 z-10" style={{ opacity: 1, scrollSnapAlign: 'start' }}>
+      <div className="section-bg-layer" />
+      <div className="absolute top-0 left-0 right-0 h-px section-divider" />
+      
       {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-1/2 bg-neon-green/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-1/2 bg-neon-green/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
       
       {/* Ticker */}
       <div className="w-full border-y border-white/10 bg-black/50 py-3 mb-16 overflow-hidden flex whitespace-nowrap">
@@ -43,47 +88,47 @@ export const Markets: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 relative z-10">
           <div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-2">Live <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-soft-neon">Markets</span></h2>
-            <p className="text-gray-400 font-mono text-sm max-w-md">Trade 500+ assets with deepest liquidity and lowest slippage.</p>
+            <h2 className="gsap-headline text-4xl md:text-5xl font-display font-bold mb-2" style={{ opacity: 1 }}>Live <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-electric-blue">Markets</span></h2>
+            <p className="gsap-subheading text-[#E0F7FF] font-mono text-sm max-w-md" style={{ opacity: 1 }}>Trade 500+ assets with deepest liquidity and lowest slippage.</p>
           </div>
-          <button className="text-sm font-mono text-emerald-green hover:text-white transition-colors mt-4 md:mt-0 items-center flex gap-2">
+          <button className="text-sm font-mono text-electric-blue hover:text-white transition-colors mt-4 md:mt-0 items-center flex gap-2">
             View All Pairs <span className="text-lg">→</span>
           </button>
         </div>
 
         {/* 3D Asset Cards */}
-        <div className="flex flex-wrap lg:flex-nowrap gap-6 perspective-1000">
+        <div className="flex flex-wrap lg:flex-nowrap gap-6 preserve-3d relative z-10">
           {assets.slice(0,4).map((item, i) => (
             <div 
               key={i} 
-              className="w-full md:w-[calc(50%-12px)] lg:w-1/4 h-64 glass-panel rounded-2xl relative overflow-hidden group transform transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(57,255,20,0.2)] hover:border-neon-green/30"
-              style={{ transformStyle: 'preserve-3d' }}
+              className="market-card w-full md:w-[calc(50%-12px)] lg:w-1/4 h-64 glass-card rounded-2xl relative overflow-hidden group transform transition-all duration-300 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,255,136,0.2)] border border-[rgba(0,255,136,0.3)]"
+              style={{ opacity: 1 }}
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${item.color} to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
               
               <div className="p-6 h-full flex flex-col justify-between transform translate-z-20">
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="text-xl font-bold font-display">{item.symbol}</div>
-                    <div className="text-gray-400 text-sm">{item.name}</div>
+                    <div className="text-xl font-bold font-display text-[#F0FFFF]">{item.symbol}</div>
+                    <div className="text-[#E0F7FF] text-sm">{item.name}</div>
                   </div>
-                  <div className={`px-2 py-1 rounded text-xs font-mono font-bold ${item.change.startsWith('+') ? 'bg-neon-green/20 text-neon-green' : 'bg-error/20 text-error'}`}>
+                  <div className={`px-2 py-1 rounded text-xs font-mono font-bold ${item.change.startsWith('+') ? 'bg-neon-green/20 text-[#00FF88]' : 'bg-error/20 text-[#FF2A6D]'}`}>
                     {item.change}
                   </div>
                 </div>
                 
                 <div>
-                  <div className="text-3xl font-mono font-bold mb-2">${item.price}</div>
+                  <div className="text-3xl font-mono font-bold mb-2 text-[#00FF88]" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>${item.price}</div>
                   
                   {/* Fake sparkline on hover */}
-                  <div className="h-12 w-full flex items-end gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
+                  <div className="h-12 w-full flex items-end gap-1 transition-opacity opacity-100">
                     {[30, 45, 25, 60, 40, 80, 50, 90, 70, 100].map((h, j) => (
                       <div 
                         key={j} 
                         className={`flex-1 rounded-sm ${item.change.startsWith('+') ? 'bg-neon-green' : 'bg-error'}`} 
-                        style={{ height: `${h}%`, transformOrigin: 'bottom', transform: 'scaleY(0)', animation: `growUp 0.5s ease forwards ${j*0.05}s` }}
+                        style={{ height: `${h}%`, transformOrigin: 'bottom', animation: `growUp 0.5s ease forwards ${j*0.05}s` }}
                       ></div>
                     ))}
                   </div>
@@ -95,10 +140,8 @@ export const Markets: React.FC = () => {
       </div>
       <style>{`
         @keyframes growUp {
+          from { transform: scaleY(0); }
           to { transform: scaleY(1); }
-        }
-        .group:hover .flex-1 {
-          animation-name: growUp;
         }
       `}</style>
     </section>

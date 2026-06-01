@@ -24,8 +24,8 @@ export const Footer: React.FC = () => {
           </p>
           
           <form className="relative w-full max-w-md group" onSubmit={(e) => e.preventDefault()}>
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-green to-neon-green rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
-            <div className="relative flex glass-panel rounded-xl overflow-hidden p-1 shadow-[0_0_20px_rgba(57,255,20,0.3)]">
+            <div className="absolute -inset-1 bg-gradient-to-r from-electric-blue to-neon-green rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
+            <div className="relative flex glass-card rounded-xl overflow-hidden p-1 shadow-[0_0_20px_rgba(0,255,136,0.1)]">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
               />
               <button 
                 type="submit" 
-                className="bg-gradient-to-r from-emerald-green to-neon-green px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:scale-105 transition-transform text-primary-bg"
+                className="bg-gradient-to-r from-electric-blue to-neon-green px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:scale-105 transition-transform text-primary-bg"
               >
                 Join <Send size={16} />
               </button>
@@ -45,7 +45,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 border-t border-white/10 pt-12">
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded bg-gradient-to-br from-emerald-green to-neon-green flex items-center justify-center">
+              <div className="w-8 h-8 rounded bg-gradient-to-br from-electric-blue to-neon-green flex items-center justify-center">
                 <span className="font-display font-bold text-primary-bg text-lg leading-none">N</span>
               </div>
               <span className="font-display font-bold text-xl tracking-wider">
@@ -80,13 +80,13 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold mb-4 text-white">Connect</h4>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:-translate-y-2 hover:text-neon-green hover:border-neon-green transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:-translate-y-2 hover:text-neon-green hover:border-neon-green transition-all duration-300">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:-translate-y-2 hover:text-white hover:border-white transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:-translate-y-2 hover:text-white hover:border-white transition-all duration-300">
                 <Github size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:-translate-y-2 hover:text-emerald-green hover:border-emerald-green transition-all duration-300">
+              <a href="#" className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:-translate-y-2 hover:text-electric-blue hover:border-electric-blue transition-all duration-300">
                 <Linkedin size={18} />
               </a>
             </div>

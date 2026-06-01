@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+const fs = require('fs');
+
+const pricingBg = `import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check } from 'lucide-react';
@@ -9,7 +11,7 @@ const plans = [
   {
     name: 'Basic', price: '0',
     features: ['Spot trading', 'Basic charts', 'Standard support', 'Up to $10k vol/mo'],
-    glow: '', border: 'border-white/10', btn: 'bg-white/5 hover:bg-white/10'
+    glow: '', border: 'border-[1px] border-[rgba(0,255,136,0.3)]', btn: 'bg-white/5 hover:bg-white/10'
   },
   {
     name: 'Pro', price: '49',
@@ -19,12 +21,12 @@ const plans = [
   {
     name: 'Institutional', price: '499',
     features: ['Dark pool access', 'Dedicated account manager', 'Colocation server', 'Custom API rates'],
-    glow: '', border: 'border-white/10', btn: 'bg-white/5 hover:bg-white/10'
+    glow: '', border: 'border-[1px] border-[rgba(0,255,136,0.3)]', btn: 'bg-white/5 hover:bg-white/10'
   }
 ];
 
 export const Pricing: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,12 +63,14 @@ export const Pricing: React.FC = () => {
       }, {
         opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out'
       }, 0.3);
+
     }, sectionRef);
     return () => ctx.revert();
   }, []);
 
   return (
     <section id="pricing" ref={sectionRef} className="py-32 relative text-white perspective-1000 scroll-mt-20 z-10" style={{ opacity: 1, scrollSnapAlign: 'start' }}>
+      
       <div className="section-bg-layer" />
       <div className="absolute top-0 left-0 right-0 h-px section-divider" />
       
@@ -84,29 +88,35 @@ export const Pricing: React.FC = () => {
           {plans.map((plan, i) => (
             <div 
               key={i} 
-              className={`pricing-card w-full max-w-sm glass-card p-8 rounded-3xl border transition-all duration-300 hover:-translate-y-4 hover:rotate-y-5
-                ${plan.border} ${plan.glow} ${i === 1 ? 'lg:-translate-y-5 lg:scale-105 z-10' : 'z-0'}
-              `}
-              style={{ transformStyle: 'preserve-3d', opacity: 1 }}
+              className={\`pricing-card w-full max-w-sm p-8 rounded-3xl transition-all duration-300 hover:-translate-y-4 hover:rotate-y-5 \${plan.border} \${plan.glow} \${i === 1 ? 'lg:-translate-y-5 lg:scale-105 z-10' : 'z-0'}\`}
+              style={{
+                background: 'rgba(10, 22, 40, 0.92)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                boxShadow: i === 1 ? '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 136, 0.15)' : 'none',
+                opacity: 1,
+                backgroundClip: 'padding-box',
+                transformStyle: 'preserve-3d'
+              }}
             >
-              {i === 1 && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-neon-green text-primary-bg px-4 py-1 text-xs font-bold rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(0,255,136,0.4)] z-20">Most Popular</div>}
+              {i === 1 && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-neon-green text-primary-bg px-4 py-1 text-xs font-bold rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(0,255,136,0.4)]">Most Popular</div>}
               
               <h3 className="text-2xl font-display font-bold mb-2 text-[#F0FFFF]">{plan.name}</h3>
               <div className="mb-6">
-                <span className="text-5xl font-mono font-bold text-neon-green" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>${plan.price}</span>
+                <span className="text-5xl font-mono font-bold text-[#00FF88]" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>\\${plan.price}</span>
                 <span className="text-[#E0F7FF] text-sm font-semibold">/mo</span>
               </div>
               
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feat, j) => (
                   <li key={j} className="flex items-center gap-3 text-sm">
-                    <Check className={`w-5 h-5 ${i === 1 ? 'text-neon-green flex-shrink-0' : 'text-[#E0F7FF] grayscale flex-shrink-0'}`} />
+                    <Check className={\`w-5 h-5 \${i === 1 ? 'text-[#00FF88]' : 'text-[#E0F7FF] grayscale'}\`} />
                     <span className="text-[#F0FFFF] font-medium">{feat}</span>
                   </li>
                 ))}
               </ul>
               
-              <button className={`w-full py-4 rounded-xl font-bold transition-all duration-300 ${plan.btn}`}>
+              <button className={\`w-full py-4 rounded-xl font-bold transition-all duration-300 \${plan.btn}\`}>
                 Select {plan.name}
               </button>
             </div>
@@ -116,3 +126,6 @@ export const Pricing: React.FC = () => {
     </section>
   );
 };
+`;
+
+fs.writeFileSync('src/components/Pricing.tsx', pricingBg);
